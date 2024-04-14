@@ -12,6 +12,7 @@ import {
 })
 export class BetterHighlightDirective implements OnInit  {
   @HostBinding('style.backgroundColor') backgroundColor: string = 'transparent';
+  // Używamy, jeśli chcemy tylko zmienić style, użycie renderer do tego również nie jest złe
 
 
   constructor(
