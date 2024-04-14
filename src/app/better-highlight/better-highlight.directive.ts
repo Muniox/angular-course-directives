@@ -3,6 +3,7 @@ import {
   ElementRef,
   HostBinding,
   HostListener,
+  Input,
   OnInit,
   Renderer2
 } from '@angular/core';
@@ -11,7 +12,9 @@ import {
   selector: '[appBetterHighlight]'
 })
 export class BetterHighlightDirective implements OnInit  {
-  @HostBinding('style.backgroundColor') backgroundColor: string = 'transparent';
+  @Input() defaultColor: string = 'transparent';
+  @Input('appBetterHighlight') highlightColor: string = 'blue';
+  @HostBinding('style.backgroundColor') backgroundColor: string = this.defaultColor;
   // Używamy, jeśli chcemy tylko zmienić style, użycie renderer do tego również nie jest złe
 
 
@@ -23,6 +26,7 @@ export class BetterHighlightDirective implements OnInit  {
   ngOnInit() {
     // this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', 'blue');
     this.renderer.setStyle(this.elementRef.nativeElement, 'cursor', 'pointer');
+    this.backgroundColor = this.defaultColor;
   }
 
   // jest to lepsze podejście, ponieważ angular może działać jako serwis worker, przez co nie będziemy mieli dostępu
@@ -33,7 +37,7 @@ export class BetterHighlightDirective implements OnInit  {
   ) {
     this.renderer.setStyle(this.elementRef.nativeElement, 'color', 'white');
     // this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', 'blue');
-    this.backgroundColor = 'blue'
+    this.backgroundColor = this.highlightColor;
   }
 
   @HostListener('mouseleave') mouseout(
@@ -41,6 +45,6 @@ export class BetterHighlightDirective implements OnInit  {
   ) {
     this.renderer.setStyle(this.elementRef.nativeElement, 'color', 'black');
     // this.renderer.setStyle(this.elementRef.nativeElement, 'background-color', 'transparent');
-    this.backgroundColor = 'transparent'
+    this.backgroundColor = this.defaultColor
   }
 }
